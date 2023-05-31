@@ -54,7 +54,12 @@ if 'generated' not in st.session_state:
 if 'past' not in st.session_state:
     st.session_state['past'] = []
 
+@st.cache_resource
+def load_model():
+    return Model('vblagoje/bart_lfqa', embedder, index)
 
+model = load_model()
+    
 def get_text():
     input_text = st.text_input('Enter Query: ', 
                                placeholder = 'What is Business and Management?',
@@ -66,9 +71,6 @@ user_input = get_text()
 try:
     if user_input:
         st.session_state.past.append(user_input)
-        model = Model('vblagoje/bart_lfqa',
-                embedder,
-                index)
         query = model.make_query(user_input, 'context', topk) # fetches context from vector db and reformats it
         # print(query)
         answer = model.generate_answer(query, min_length, max_length, numBeam, pot_ans, top_p, temp) # generate answer
