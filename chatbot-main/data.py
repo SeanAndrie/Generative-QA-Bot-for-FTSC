@@ -63,11 +63,20 @@ class Model:
         
         self.device = 'cuda' if torch.cuda.is_available() else 'cpu'
 
-        self.tokenizer = AutoTokenizer.from_pretrained(model_checkpoint)
-        self.generator = BartForConditionalGeneration.from_pretrained(model_checkpoint).to(self.device)
+        # self.tokenizer = AutoTokenizer.from_pretrained(model_checkpoint)
+        # self.generator = BartForConditionalGeneration.from_pretrained(model_checkpoint).to(self.device)
 
+        self.model_checkpoint = model_checkpoint
         self.embedder = embedder
         self.index = index
+
+        self.tokenizer, self.generator = self.load_model()
+    
+    @st.cache
+    def load_model(self):
+        tokenizer = AutoTokenizer.from_pretrained(self.model_checkpoint)
+        generator = BartForConditionalGeneration.from_pretrained(self.model_checkpoint).to(self.device)
+        return tokenizer, generator
     
     def query_db(self, query, top_k):
         encoded_query = self.embedder.encode([query]).tolist()
