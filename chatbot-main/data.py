@@ -118,7 +118,7 @@ class Model:
 def init_vector_db(api_key, environ, index_name, dims, metric):
     return VectorDB(api_key, environ).create_index(index_name, dims, metric)
 
-@st.cache_resource
+@st.cache_data
 def embed_vectors(df, context_column_name, model_ref, __index, batch_size):
     Embedder = VectorEmbedding(model_ref, __index)
     Embedder.create_embeddings(df, context_column_name, batch_size)
