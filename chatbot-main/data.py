@@ -93,8 +93,9 @@ class Model:
         context = self.query_db(query, top_k = top_k)
         query = self.format_query(query, context_column_name, context['matches'])
         print(query)
-        return query     
+        return query
     
+    @st.cache_data
     def generate_answer(self, query, min_length, max_length, num_beams, top_k, top_p, temperature):
 
         inputs = self.tokenizer([query], return_tensors = 'pt', truncation = True, padding = True).to(self.device)
