@@ -72,7 +72,6 @@ class Model:
 
         self.tokenizer, self.generator = self.load_model()
     
-    @st.cache
     def load_model(self):
         tokenizer = AutoTokenizer.from_pretrained(self.model_checkpoint)
         generator = BartForConditionalGeneration.from_pretrained(self.model_checkpoint).to(self.device)
