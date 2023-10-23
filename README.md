@@ -1,1 +1,1 @@
-# generative_qa_streamlit_app
+Generative Q&A Streamlit Application
